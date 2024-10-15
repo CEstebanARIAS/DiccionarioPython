@@ -39,6 +39,7 @@ def quiz(parent_frame):
 
     # Opciones
     var = tk.StringVar()
+    var.set('')
 
     opciones = [
         ("1. x == 10", "incorrecto"),
