@@ -1,13 +1,15 @@
 import tkinter as tk
 from tkinter import ttk
-from View.temas import variables_view, bucles_view, condicionales_view, funciones_view,listas_view
+from View.temas import variables_view, bucles_view, condicionales_view, funciones_view, listas_view
 
 class MainView(tk.Tk):
     def __init__(self, user_name):
         super().__init__()
 
         self.title("AprendePython")
-        self.geometry("800x600")
+
+        # **No establecemos un tamaño fijo aquí**
+        # self.geometry("800x600")  # Esto se elimina para permitir que el tamaño sea dinámico
 
         # Barra de navegación (menú superior)
         self.create_menu(user_name)
@@ -37,10 +39,10 @@ class MainView(tk.Tk):
 
         temas_menu.add_command(label="Inicio", command=lambda: self.mostrar_inicio())
         temas_menu.add_command(label="Variables", command=lambda: self.mostrar_tema("Variables", variables_view.mostrar_contenido_variables))
-        temas_menu.add_command(label="Condicionales", command=lambda: self.mostrar_tema("Condicionales", mostrar_contenido_condicionales))
+        temas_menu.add_command(label="Condicionales", command=lambda: self.mostrar_tema("Condicionales", condicionales_view.mostrar_contenido_condicionales))
         temas_menu.add_command(label="Bucles", command=lambda: self.mostrar_tema("Bucles", bucles_view.mostrar_contenido_bucles))
-        temas_menu.add_command(label="Funciones", command=lambda: self.mostrar_tema("Funciones", mostrar_contenido_funciones))
-        temas_menu.add_command(label="Listas", command=lambda: self.mostrar_tema("Listas", mostrar_contenido_listas))
+        temas_menu.add_command(label="Funciones", command=lambda: self.mostrar_tema("Funciones", funciones_view.mostrar_contenido_funciones))
+        temas_menu.add_command(label="Listas", command=lambda: self.mostrar_tema("Listas", listas_view.mostrar_contenido_listas))
         menubar.add_cascade(label="Temas", menu=temas_menu)
 
         # Menú de usuario
@@ -61,6 +63,10 @@ class MainView(tk.Tk):
         label_inicio = tk.Label(self.contenido_frame, text="Bienvenido a AprendePython", font=("Arial", 16))
         label_inicio.pack(pady=20)
 
+        # Ajuste automático al contenido
+        self.update_idletasks()  # Fuerza el recalculo del tamaño
+        self.geometry("")  # Permite que tkinter ajuste el tamaño automáticamente
+
     def mostrar_tema(self, tema, mostrar_contenido_func):
         """Muestra el contenido del tema seleccionado y actualiza las migas de pan"""
         self.actualizar_breadcrumbs(tema)
@@ -71,6 +77,10 @@ class MainView(tk.Tk):
 
         # Llamar a la función que muestra el contenido específico del tema
         mostrar_contenido_func(self.contenido_frame)
+
+        # Ajuste automático al contenido
+        self.update_idletasks()  # Fuerza el recalculo del tamaño
+        self.geometry("")  # Permite que tkinter ajuste el tamaño automáticamente
 
     def actualizar_breadcrumbs(self, tema):
         """Actualiza las migas de pan según el tema seleccionado"""
