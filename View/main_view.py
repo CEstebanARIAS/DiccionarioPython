@@ -8,9 +8,6 @@ class MainView(tk.Tk):
 
         self.title("AprendePython")
 
-        # **No establecemos un tamaño fijo aquí**
-        # self.geometry("800x600")  # Esto se elimina para permitir que el tamaño sea dinámico
-
         # Barra de navegación (menú superior)
         self.create_menu(user_name)
 

@@ -42,10 +42,10 @@ def quiz(parent_frame):
     var.set('')
 
     opciones = [
-        ("1. x == 10", "incorrecto"),
-        ("2. x = 10", "correcto"),
-        ("3. x := 10", "incorrecto"),
-        ("4. 10 = x", "incorrecto")
+        ("x == 10", "incorrecto1"),
+        ("x = 10", "correcto"),
+        ("x := 10", "incorrecto2"),
+        ("10 = x", "incorrecto3")
     ]
 
     for texto, valor in opciones:
@@ -56,7 +56,10 @@ def quiz(parent_frame):
 
 def verificar_respuesta(var):
     """Verifica si la respuesta del cuestionario es correcta"""
-    if var.get() == "correcto":
+    if var.get() == "":
+        messagebox.showwarning("Resultado","Selecciona una respuesta primero")
+    elif var.get() == "correcto":
         messagebox.showinfo("Resultado", "¡Correcto! La asignación de variables en Python es 'x = valor'.")
     else:
-        messagebox.showwarning("Resultado", "Incorrecto. La respuesta correcta es 'x = valor'.")
+        messagebox.showwarning("Resultado", "Incorrecto. Intentelo nuevamente")
+        
