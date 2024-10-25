@@ -21,7 +21,14 @@ class RegisterWindow(tk.Tk):
         self.password_entry.pack(pady=5)
 
         tk.Button(self, text="Registrarse", command=self.register).pack(pady=20)
+        tk.Button(self, text="Cancelar", command=self.cancelar).pack(pady=10)
 
+
+    def cancelar(self):
+        self.destroy()
+        from View.login_view import LoginWindow  # Importamos aquí para evitar el ciclo
+        LoginWindow().mainloop()
+        
     def register(self):
         name = self.name_entry.get()
         email = self.email_entry.get()
