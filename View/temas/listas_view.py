@@ -5,7 +5,7 @@ def mostrar_contenido_listas(parent_frame):
     """Muestra el contenido del tema Variables en el frame principal"""
 
     # Título del tema
-    tk.Label(parent_frame, text="Variables en Python", font=("Arial", 16, "bold")).pack(pady=10)
+    tk.Label(parent_frame, text="Variables en Python!!!", font=("Arial", 16, "bold")).pack(pady=10)
 
     # Descripción del tema
     descripcion = (
