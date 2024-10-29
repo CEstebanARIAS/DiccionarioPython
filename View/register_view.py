@@ -20,7 +20,7 @@ class RegisterWindow(tk.Tk):
 
         # Campo de nombre
         tk.Label(form_frame, text="Nombre", font=("Arial", 10), bg="white", fg="#666").pack(pady=(10, 0))
-        self.name_entry = tk.Entry(form_frame, show="*", font=("Arial", 12), width=30, relief="solid")
+        self.name_entry = tk.Entry(form_frame, font=("Arial", 12), width=30, relief="solid")
         self.name_entry.pack(pady=5)
 
         # Campo de correo
