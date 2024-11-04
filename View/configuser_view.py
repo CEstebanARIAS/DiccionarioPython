@@ -6,8 +6,8 @@ class ConfigUserView(tk.Toplevel):
         super().__init__()
 
         self.title("Configurar Perfil")
-        self.update_idletasks()  # Fuerza el recalculo del tamaño
-        self.geometry("")  # Permite que tkinter ajuste el tamaño automáticamente
+        self.geometry("400x350")
+        self.resizable(False, False)
 
         self.user_name = user_name
 
