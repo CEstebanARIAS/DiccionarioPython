@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from View.temas import variables_view, bucles_view, condicionales_view, funciones_view, listas_view
 from Utils.progresTracker_utils import ProgressTracker
+from View.configuser_view import ConfigUserView
 
 class MainView(tk.Tk):
     def __init__(self, user_name):
@@ -56,7 +57,7 @@ class MainView(tk.Tk):
 
         # Menú de usuario
         usuario_menu = tk.Menu(menubar, tearoff=0)
-        usuario_menu.add_command(label="Configurar perfil")
+        usuario_menu.add_command(label="Configurar perfil", command=lambda: ConfigUserView(user_name))
         usuario_menu.add_separator()
         usuario_menu.add_command(label="Cerrar sesión", command=self.cerrar_sesion)
         menubar.add_cascade(label=user_name, menu=usuario_menu)
