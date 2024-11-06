@@ -10,7 +10,7 @@ class MainView(tk.Tk):
         super().__init__()
 
         self.title("AprendePython")
-        self.geometry("1000x400")
+       
         self.configure(bg="#ffffff")  # Fondo blanco para la ventana principal
 
         # Crear instancia de ProgressTracker para manejar el progreso
@@ -22,6 +22,11 @@ class MainView(tk.Tk):
         # Creación del frame principal donde se mostrarán los temas
         self.contenido_frame = ttk.Frame(self, padding=(20, 10), style="Contenido.TFrame")
         self.contenido_frame.pack(fill="both", expand=True, padx=10, pady=10)
+
+        # Permitir que la ventana se ajuste automáticamente al contenido
+        self.update_idletasks()  # Asegura que el contenido inicial esté cargado
+        self.geometry("")  # Elimina el tamaño fijo, ajustándose al contenido
+        self.resizable(True, True)  # Permite que la ventana sea redimensionable
 
         # Contenido inicial
         self.mostrar_inicio()
@@ -35,8 +40,8 @@ class MainView(tk.Tk):
         self.breadcrumbs_var = tk.StringVar(value="Inicio")
         self.progreso_var = tk.StringVar(value=f"Progreso: {self.progress_tracker.obtener_progreso()}%")
 
-        breadcrumbs_label = tk.Label(header_frame, textvariable=self.breadcrumbs_var, font=("Arial", 12), fg="#002c77", bg="#ffffff")
-        progreso_label = tk.Label(header_frame, textvariable=self.progreso_var, font=("Arial", 12), fg="#002c77", bg="#ffffff")
+        breadcrumbs_label = tk.Label(header_frame, textvariable=self.breadcrumbs_var, font=("Arial", 10), fg="#002c77", bg="#ffffff")
+        progreso_label = tk.Label(header_frame, textvariable=self.progreso_var, font=("Arial", 10), fg="#002c77", bg="#ffffff")
 
         breadcrumbs_label.pack(side="left", padx=(0, 20))
         progreso_label.pack(side="right", padx=(0, 20))
@@ -141,7 +146,7 @@ class MainView(tk.Tk):
         """Muestra el contenido del tema seleccionado y actualiza las migas de pan"""
         self.actualizar_breadcrumbs(tema)
 
-    
+
         for widget in self.contenido_frame.winfo_children():
             widget.destroy()
 
