@@ -28,4 +28,4 @@ def get_user(correo, contrasena):
     conn.close()
     return user
 
-create_user_table()
+

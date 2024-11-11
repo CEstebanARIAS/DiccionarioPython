@@ -10,7 +10,7 @@ class MainView(tk.Tk):
         super().__init__()
 
         self.title("AprendePython")
-       
+        self.geometry("800x600")  # Ajusta el tamaño inicial de la ventanav
         self.configure(bg="#ffffff")  # Fondo blanco para la ventana principal
 
         # Crear instancia de ProgressTracker para manejar el progreso
@@ -19,14 +19,26 @@ class MainView(tk.Tk):
         # Crear el encabezado principal
         self.create_header(user_name)
 
-        # Creación del frame principal donde se mostrarán los temas
-        self.contenido_frame = ttk.Frame(self, padding=(20, 10), style="Contenido.TFrame")
-        self.contenido_frame.pack(fill="both", expand=True, padx=10, pady=10)
+        # Configurar Canvas y Scrollbar para el contenido desplazable
+        self.canvas = tk.Canvas(self, bg="#ffffff")
+        self.scrollbar = ttk.Scrollbar(self, orient="vertical", command=self.canvas.yview)
+        self.scrollable_frame = ttk.Frame(self.canvas, style="Contenido.TFrame")
 
-        # Permitir que la ventana se ajuste automáticamente al contenido
-        self.update_idletasks()  # Asegura que el contenido inicial esté cargado
-        self.geometry("")  # Elimina el tamaño fijo, ajustándose al contenido
-        self.resizable(True, True)  # Permite que la ventana sea redimensionable
+        # Asociar el Frame al Canvas
+        self.scrollable_frame.bind(
+            "<Configure>",
+            lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all"))
+        )
+
+        self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
+        self.canvas.configure(yscrollcommand=self.scrollbar.set)
+
+        # Ubicar el Canvas y el Scrollbar en la ventana
+        self.canvas.pack(side="left", fill="both", expand=True, padx=10, pady=10)
+        self.scrollbar.pack(side="right", fill="y")
+
+        # Evento de la rueda del mouse
+        self.canvas.bind_all("<MouseWheel>", self._on_mousewheel)
 
         # Contenido inicial
         self.mostrar_inicio()
@@ -80,16 +92,34 @@ class MainView(tk.Tk):
 
     def mostrar_inicio(self):
         """Muestra el contenido de inicio con el texto a la izquierda y la imagen a la derecha"""
-        for widget in self.contenido_frame.winfo_children():
+        for widget in self.scrollable_frame.winfo_children():
             widget.destroy()
 
         # Crear un Frame para el contenido de bienvenida y organizar el texto y la imagen
-        welcome_content_frame = tk.Frame(self.contenido_frame, bg="#ffffff")
+        welcome_content_frame = tk.Frame(self.scrollable_frame, bg="#ffffff")
         welcome_content_frame.pack(fill="both", expand=True)
+
+
+        # Frame para la imagen
+        image_frame = tk.Frame(welcome_content_frame, bg="#ffffff")
+        image_frame.pack(fill="both", expand=True)
+        
+        # Espacio para la imagen
+        try:
+            image_path = "images/Main.jpg"  # Ruta de la imagen que subiste
+            image = Image.open(image_path)
+            image = image.resize((350, 300), Image.LANCZOS)
+            photo = ImageTk.PhotoImage(image)
+            image_label = tk.Label(image_frame, image=photo, bg="#ffffff")
+            image_label.image = photo
+            image_label.pack(anchor="center", pady=20)
+        except Exception as e:
+            print(f"No se pudo cargar la imagen: {e}")
+
 
         # Frame para el texto
         text_frame = tk.Frame(welcome_content_frame, bg="#ffffff")
-        text_frame.pack(side="left", fill="both", expand=True)
+        text_frame.pack(fill="both", expand=True)
 
         # Texto de bienvenida
         texto_titulo = tk.Label(
@@ -99,7 +129,7 @@ class MainView(tk.Tk):
             fg="#002c77",
             bg="#ffffff"
         )
-        texto_titulo.pack(anchor="center", pady=(20, 10))
+        texto_titulo.pack(anchor="center", pady=(10, 10))
 
         texto_descripcion = tk.Label(
             text_frame,
@@ -108,7 +138,7 @@ class MainView(tk.Tk):
             fg="#333333",
             bg="#ffffff"
         )
-        texto_descripcion.pack(anchor="center", pady=(20,10))
+        texto_descripcion.pack(anchor="center", pady=(10,10))
 
         texto_bienvenida = tk.Label(
             text_frame,
@@ -118,23 +148,9 @@ class MainView(tk.Tk):
             bg="#ffffff",
             wraplength=400
         )
-        texto_bienvenida.pack(anchor="center", pady=(20, 10))
+        texto_bienvenida.pack(anchor="center", pady=(10, 10))
 
-        # Frame para la imagen
-        image_frame = tk.Frame(welcome_content_frame, bg="#ffffff")
-        image_frame.pack(side="right", fill="both", expand=True)
-
-        # Espacio para la imagen
-        try:
-            image_path = "images/Main.jpg"  # Ruta de la imagen que subiste
-            image = Image.open(image_path)
-            image = image.resize((350, 300), Image.LANCZOS)
-            photo = ImageTk.PhotoImage(image)
-            image_label = tk.Label(image_frame, image=photo, bg="#ffffff")
-            image_label.image = photo
-            image_label.pack(anchor="e", padx=50)
-        except Exception as e:
-            print(f"No se pudo cargar la imagen: {e}")
+        
 
     def completar_tema(self, tema, mostrar_contenido_func):
         """Llama a ProgressTracker para actualizar el progreso y muestra el tema seleccionado"""
@@ -146,18 +162,18 @@ class MainView(tk.Tk):
         """Muestra el contenido del tema seleccionado y actualiza las migas de pan"""
         self.actualizar_breadcrumbs(tema)
 
-
-        for widget in self.contenido_frame.winfo_children():
+        for widget in self.scrollable_frame.winfo_children():
             widget.destroy()
 
-    
-        mostrar_contenido_func(self.contenido_frame)
+        mostrar_contenido_func(self.scrollable_frame)
 
-    
-    
     def actualizar_breadcrumbs(self, tema):
         """Actualiza las migas de pan según el tema seleccionado"""
         self.breadcrumbs_var.set(f"Inicio > {tema}")
+
+    def _on_mousewheel(self, event):
+        """Función para hacer scroll con la rueda del mouse"""
+        self.canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
 
 # Ejecutar la ventana principal
 if __name__ == "__main__":
