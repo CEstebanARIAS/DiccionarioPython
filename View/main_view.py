@@ -30,7 +30,7 @@ class MainView(tk.Tk):
             lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all"))
         )
 
-        self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
+        self.canvas.create_window((400, 0), window=self.scrollable_frame, anchor="n")  # Centrar el frame
         self.canvas.configure(yscrollcommand=self.scrollbar.set)
 
         # Ubicar el Canvas y el Scrollbar en la ventana
@@ -97,13 +97,12 @@ class MainView(tk.Tk):
 
         # Crear un Frame para el contenido de bienvenida y organizar el texto y la imagen
         welcome_content_frame = tk.Frame(self.scrollable_frame, bg="#ffffff")
-        welcome_content_frame.pack(fill="both", expand=True)
-
+        welcome_content_frame.pack(anchor="center")  # Centrar el frame en scrollable_frame
 
         # Frame para la imagen
         image_frame = tk.Frame(welcome_content_frame, bg="#ffffff")
-        image_frame.pack(fill="both", expand=True)
-        
+        image_frame.pack(anchor="center", pady=(0, 10))
+
         # Espacio para la imagen
         try:
             image_path = "images/Main.jpg"  # Ruta de la imagen que subiste
@@ -112,14 +111,13 @@ class MainView(tk.Tk):
             photo = ImageTk.PhotoImage(image)
             image_label = tk.Label(image_frame, image=photo, bg="#ffffff")
             image_label.image = photo
-            image_label.pack(anchor="center", pady=20)
+            image_label.pack()
         except Exception as e:
             print(f"No se pudo cargar la imagen: {e}")
 
-
         # Frame para el texto
         text_frame = tk.Frame(welcome_content_frame, bg="#ffffff")
-        text_frame.pack(fill="both", expand=True)
+        text_frame.pack(anchor="center")
 
         # Texto de bienvenida
         texto_titulo = tk.Label(
@@ -149,8 +147,6 @@ class MainView(tk.Tk):
             wraplength=400
         )
         texto_bienvenida.pack(anchor="center", pady=(10, 10))
-
-        
 
     def completar_tema(self, tema, mostrar_contenido_func):
         """Llama a ProgressTracker para actualizar el progreso y muestra el tema seleccionado"""
